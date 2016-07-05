@@ -9,6 +9,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             "firstName":"firstName",
             "lastName":"lastName",
             "workEmail":"work@email.email",
+            "homeEmail":"home@email.email",
             "nickName":"nickName",
             "jobTitle":"jobTitle",
             "_links":{"self":{"href":"http://localhost/groups/name/contacts/1"}}
