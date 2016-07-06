@@ -75,7 +75,35 @@ angular.module("contactServiceModule", ["authServiceModule"])
 
         contactServiceObject.addContactToGroup = function (groupId, contact) {
             var deferred = $q.defer();
-            deferred.resolve({});
+
+            if (typeof groupId === "undefined") {
+                deferred.reject({
+                    message: "Argument Error",
+                    fields: {
+                        groupId: ["groupId is reqired"]
+                    }
+                });
+                return deferred.promise;
+            }
+
+            var config = {
+                url: "http://localhost:8080/groups/" + groupId + "/contacts",
+                method: "POST",
+                data: {  }
+            };
+
+            var httpPromise = $httpWithProtection(config);
+
+            httpPromise.then(function (result) {
+                deferred.resolve(result.data);
+            }, function (error) {
+                deferred.reject({
+                    message: error.data.message,
+                    status: error.status,
+                    httpResponse: error.config
+                });
+            });
+
             return deferred.promise;
         };
 
