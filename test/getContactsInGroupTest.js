@@ -37,7 +37,11 @@ describe("getContactsInGroup method", function () {
     });
 
     it("should return an error object with argument error message", function () {
-        var promise = _contactService.getContactsInGroup();
+        var promise = _contactService.getContactsInGroup(0);
+
+        promise.then(function (data) {
+            expect(false).toBe(true);
+        });
 
         promise.catch(function (reason) {
             expect(reason).toEqual({
