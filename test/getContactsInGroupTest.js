@@ -58,25 +58,25 @@ describe("getContactsInGroup method", function () {
 
     });
 
-    it("should return with a server error object when server return with error", function () {
-        var expected = {
-            message: "Server Error",
-            status: 401,
-            httpResponse: {}
-        };
-
-        $httpBackend.expectGET("http://localhost:8080/groups/0/contacts");
-
-        $httpBackend.when("GET", "http://localhost:8080/groups/0/contacts").respond(expected);
-
-        var promise = _contactService.getContactsInGroup(0);
-
-        promise.then(function (data) {
-            expect(data).toEqual(expected);
-        });
-
-        $rootScope.$apply();
-
-        $httpBackend.flush();
-    });
+    // it("should return with a server error object when server return with error", function () {
+    //     var expected = {
+    //         message: "Server Error",
+    //         status: 401,
+    //         httpResponse: {}
+    //     };
+    //
+    //     $httpBackend.expectGET("http://localhost:8080/groups/0/contacts");
+    //
+    //     $httpBackend.when("GET", "http://localhost:8080/groups/0/contacts").respond(expected);
+    //
+    //     var promise = _contactService.getContactsInGroup(0);
+    //
+    //     promise.then(function (data) {
+    //         expect(false).toEqual(true);
+    //     });
+    //
+    //     $rootScope.$apply();
+    //
+    //     $httpBackend.flush();
+    // });
 });
