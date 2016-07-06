@@ -1,4 +1,4 @@
-describe("getContactsInGroup method", function () {
+describe("addContactToGroup method", function () {
     var $httpBackend, $rootScope, _contactService;
 
     beforeEach(function () {
@@ -18,17 +18,17 @@ describe("getContactsInGroup method", function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it("should return the expected list of contacts when backend serve the request successfully", function () {
-        var contactList = [];
+    it("should return the expected contact when the contact successfully created at the backend", function () {
+        var contact = {};
 
-        $httpBackend.expectGET("http://localhost:8080/groups/0/contacts");
+        $httpBackend.expectPOST("http://localhost:8080/groups/0/contacts");
 
-        $httpBackend.when("GET", "http://localhost:8080/groups/0/contacts").respond(contactList);
+        $httpBackend.when("POST", "http://localhost:8080/groups/0/contacts").respond(contact);
 
-        var promise = _contactService.getContactsInGroup(0);
+        var promise = _contactService.addContactToGroup(0);
 
         promise.then(function (data) {
-            expect(data).toEqual(contactList);
+            expect(data).toEqual(contact);
         });
 
         $rootScope.$apply();
@@ -37,7 +37,7 @@ describe("getContactsInGroup method", function () {
     });
 
     it("should return an error object with argument error message when no groupId passed", function () {
-        var promise = _contactService.getContactsInGroup();
+        var promise = _contactService.addContactToGroup();
 
         promise.then(function (data) {
             expect(false).toBe(true);

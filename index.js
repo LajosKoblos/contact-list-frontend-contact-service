@@ -89,7 +89,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             var config = {
                 url: "http://localhost:8080/groups/" + groupId + "/contacts",
                 method: "POST",
-                data: {  }
+                data: contact
             };
 
             var httpPromise = $httpWithProtection(config);
