@@ -34,7 +34,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
                 "workEmail":"work@email.email",
                 "nickName":"nickName",
                 "jobTitle":"jobTitle",
-                "_links":{"self":{"href":"http://localhost/groups/name/contacts/1"}}
+                "_links":{"self":{"href":"http://localhost/groups/name/contacts/2"}}
             }
         ]);
         return deferred.promise;
@@ -57,7 +57,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
                 "workEmail":"work@email.email",
                 "nickName":"nickName",
                 "jobTitle":"jobTitle",
-                "_links":{"self":{"href":"http://localhost/groups/name/contacts/1"}}
+                "_links":{"self":{"href":"http://localhost/groups/name/contacts/2"}}
             }
         ]);
         return deferred.promise;
