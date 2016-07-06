@@ -1,5 +1,6 @@
 angular.module("contactServiceModule", ["authServiceModule"])
 
+    .factory("contactService", function ($httpWithProtection, $q) {
         var contactServiceObject = {};
 
         contactServiceObject.getContact = function (groupId, contactId) {
