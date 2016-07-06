@@ -130,7 +130,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             var httpPromise = $httpWithProtection(config);
 
             httpPromise.then(function (result) {
-                deferred.resolve(result.data);
+                deferred.resolve({});
             }, function (error) {
                 deferred.reject(createServerErrorObject(error));
             });
@@ -140,7 +140,35 @@ angular.module("contactServiceModule", ["authServiceModule"])
 
         contactServiceObject.deleteContact = function (groupId, contactId) {
             var deferred = $q.defer();
-            deferred.resolve();
+
+            var arguments = [];
+
+            if (typeof groupId === "undefined") {
+                arguments.push("groupId");
+            }
+
+            if (typeof contactId === "undefined") {
+                arguments.push("contactId");
+            }
+
+            if (arguments.length > 0) {
+                deferred.reject(createArgumentErrorObject(arguments));
+                return deferred.promise;
+            }
+
+            var config = {
+                url: "http://localhost:8080/groups/" + groupId + "/contacts/" + contactId,
+                method: "DELETE"
+            };
+
+            var httpPromise = $httpWithProtection(config);
+
+            httpPromise.then(function (result) {
+                deferred.resolve({});
+            }, function (error) {
+                deferred.reject(createServerErrorObject(error));
+            });
+
             return deferred.promise;
         };
 
