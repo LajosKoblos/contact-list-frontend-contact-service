@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/LajosKoblos/contact-list-frontend-contact-service#readme",
   "devDependencies": {
+    "angular": "^1.5.7",
+    "angular-mocks": "^1.5.7",
     "jasmine-core": "^2.4.1",
     "karma": "^1.1.0",
     "karma-chrome-launcher": "^1.0.1",
