@@ -60,11 +60,13 @@ angular.module("contactServiceModule", ["authServiceModule"])
 
             var httpPromise = $httpWithProtection(config);
 
-            httpPromise.then(function (data) {
-                deferred.resolve(data);
+            httpPromise.then(function (result) {
+                deferred.resolve(result.data);
             }, function (error) {
                 deferred.reject({
-                
+                    message: error.data.message,
+                    status: error.status,
+                    httpResponse: error.config
                 });
             });
 
