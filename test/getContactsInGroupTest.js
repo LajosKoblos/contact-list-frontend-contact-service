@@ -19,7 +19,7 @@ describe("getContactsInGroup method", function () {
     });
 
     it("should return the expected list of contacts", function () {
-        var contactList = [];
+        var contactList = ["asdf"];
 
         $httpBackend.expectGET("http://localhost:8080/groups/0/contacts");
 
@@ -28,7 +28,7 @@ describe("getContactsInGroup method", function () {
         var promise = _contactService.getContactsInGroup(0);
 
         promise.then(function (data) {
-            expect(data.data).toEqual(contactList);
+            expect(data).toEqual(contactList);
         });
 
         $rootScope.$apply();
