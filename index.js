@@ -99,9 +99,42 @@ angular.module("contactServiceModule", ["authServiceModule"])
             return deferred.promise;
         };
 
-        contactServiceObject.updateContact = function (groupId, contact) {
+        contactServiceObject.updateContact = function (groupId, contactId, contact) {
             var deferred = $q.defer();
-            deferred.resolve({});
+
+            var arguments = [];
+
+            if (typeof groupId === "undefined") {
+                arguments.push("groupId");
+            }
+
+            if (typeof contactId === "undefined") {
+                arguments.push("contactId");
+            }
+
+            if (typeof contact === "undefined") {
+                arguments.push("contact");
+            }
+
+            if (arguments.length > 0) {
+                deferred.reject(createArgumentErrorObject(arguments));
+                return deferred.promise;
+            }
+
+            var config = {
+                url: "http://localhost:8080/groups/" + groupId + "/contacts/" + contactId,
+                method: "PUT",
+                data: contact
+            };
+
+            var httpPromise = $httpWithProtection(config);
+
+            httpPromise.then(function (result) {
+                deferred.resolve(result.data);
+            }, function (error) {
+                deferred.reject(createServerErrorObject(error));
+            });
+
             return deferred.promise;
         };
 
