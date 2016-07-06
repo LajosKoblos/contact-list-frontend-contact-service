@@ -18,8 +18,8 @@ describe("getContactsInGroup method", function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it("should return the expected list of contacts", function () {
-        var contactList = ["asdf"];
+    it("should return the expected list of contacts when backend serve the request successfully", function () {
+        var contactList = [];
 
         $httpBackend.expectGET("http://localhost:8080/groups/0/contacts");
 
@@ -36,7 +36,14 @@ describe("getContactsInGroup method", function () {
         $httpBackend.flush();
     });
 
-    it("should return an error object with argument error message", function () {
+    it("should return an expected argument error object when no argument passed", function () {
+        var expected = {
+            message: "Argument Error",
+            fields: {
+                groupId: ["groupId is required"]
+            }
+        };
+
         var promise = _contactService.getContactsInGroup();
 
         promise.then(function (data) {
@@ -44,15 +51,32 @@ describe("getContactsInGroup method", function () {
         });
 
         promise.catch(function (reason) {
-            expect(reason).toEqual({
-                message: "Argument Error",
-                fields: {
-                    groupId: ["groupId is reqired"]
-                }
-            });
+            expect(reason).toEqual(expected);
         });
 
         $rootScope.$apply();
 
     });
+
+    // it("should return with a server error object when server return with error", function () {
+    //     var expected = {
+    //         message: "Server Error",
+    //         status: 401,
+    //         httpResponse: {}
+    //     };
+    //
+    //     $httpBackend.expectGET("http://localhost:8080/groups/0/contacts");
+    //
+    //     $httpBackend.when("GET", "http://localhost:8080/groups/0/contacts").respond(expected);
+    //
+    //     var promise = _contactService.getContactsInGroup(0);
+    //
+    //     promise.then(function (data) {
+    //         expect(false).toEqual(true);
+    //     });
+    //
+    //     $rootScope.$apply();
+    //
+    //     $httpBackend.flush();
+    // });
 });

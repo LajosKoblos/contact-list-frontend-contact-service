@@ -44,12 +44,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             var deferred = $q.defer();
 
             if (typeof groupId === "undefined") {
-                deferred.reject({
-                    message: "Argument Error",
-                    fields: {
-                        groupId: ["groupId is reqired"]
-                    }
-                });
+                deferred.reject(createArgumentErrorObject(["groupId"]));
                 return deferred.promise;
             }
 
@@ -63,11 +58,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             httpPromise.then(function (result) {
                 deferred.resolve(result.data);
             }, function (error) {
-                deferred.reject({
-                    message: error.data.message,
-                    status: error.status,
-                    httpResponse: error.config
-                });
+                deferred.reject(createServerErrorObject(error));
             });
 
             return deferred.promise;
@@ -75,7 +66,36 @@ angular.module("contactServiceModule", ["authServiceModule"])
 
         contactServiceObject.addContactToGroup = function (groupId, contact) {
             var deferred = $q.defer();
-            deferred.resolve({});
+
+            var arguments = [];
+
+            if (typeof groupId === "undefined") {
+                arguments.push("groupId");
+            }
+
+            if (typeof contact === "undefined") {
+                arguments.push("contact");
+            }
+
+            if (arguments.length > 0) {
+                deferred.reject(createArgumentErrorObject(arguments));
+                return deferred.promise;
+            }
+
+            var config = {
+                url: "http://localhost:8080/groups/" + groupId + "/contacts",
+                method: "POST",
+                data: contact
+            };
+
+            var httpPromise = $httpWithProtection(config);
+
+            httpPromise.then(function (result) {
+                deferred.resolve(result.data);
+            }, function (error) {
+                deferred.reject(createServerErrorObject(error));
+            });
+
             return deferred.promise;
         };
 
@@ -96,6 +116,26 @@ angular.module("contactServiceModule", ["authServiceModule"])
             deferred.resolve({});
             return deferred.promise;
         };
+
+        function createArgumentErrorObject(arguments) {
+            var fieldsObject = {};
+            for (var argument of arguments) {
+                fieldsObject[argument] = [argument + " is required"];
+            }
+
+            return {
+                message: "Argument Error",
+                fields: fieldsObject
+            };
+        }
+
+        function createServerErrorObject(error) {
+            return {
+                message: error.data.message,
+                status: error.status,
+                httpResponse: error.config
+            };
+        }
 
         return contactServiceObject;
     });
