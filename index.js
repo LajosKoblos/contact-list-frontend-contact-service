@@ -44,7 +44,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             var deferred = $q.defer();
 
             if (typeof groupId === "undefined") {
-                deferred.reject(createArgumentErrorObject("groupId"));
+                deferred.reject(createArgumentErrorObject(["groupId"]));
                 return deferred.promise;
             }
 
@@ -67,8 +67,18 @@ angular.module("contactServiceModule", ["authServiceModule"])
         contactServiceObject.addContactToGroup = function (groupId, contact) {
             var deferred = $q.defer();
 
+            var arguments = [];
+
             if (typeof groupId === "undefined") {
-                deferred.reject(createArgumentErrorObject("groupId"));
+                arguments.push("groupId");
+            }
+
+            if (typeof contact === "undefined") {
+                arguments.push("contact");
+            }
+
+            if (arguments.length > 0) {
+                deferred.reject(createArgumentErrorObject(arguments));
                 return deferred.promise;
             }
 
@@ -107,12 +117,15 @@ angular.module("contactServiceModule", ["authServiceModule"])
             return deferred.promise;
         };
 
-        function createArgumentErrorObject(argumentName) {
+        function createArgumentErrorObject(arguments) {
+            var fieldsObject = {};
+            for (var argument of arguments) {
+                fieldsObject[argument] = [argument + " is required"];
+            }
+
             return {
                 message: "Argument Error",
-                fields: {
-                    groupId: [argumentName + " is reqired"]
-                }
+                fields: fieldsObject
             };
         }
 
