@@ -5,15 +5,35 @@ angular.module("contactServiceModule", ["authServiceModule"])
 
         contactServiceObject.getContact = function (groupId, contactId) {
             var deferred = $q.defer();
-            deferred.resolve({
-                "firstName": "firstName",
-                "lastName": "lastName",
-                "workEmail": "work@email.email",
-                "homeEmail": "home@email.email",
-                "nickName": "nickName",
-                "jobTitle": "jobTitle",
-                "_links": {"self": {"href": "http://localhost/groups/name/contacts/1"}}
+
+            var arguments = []
+
+            if (typeof groupId === "undefined") {
+                arguments.push("groupId");
+            }
+
+            if (typeof contactId === "undefined") {
+                arguments.push("contactId");
+            }
+
+            if (arguments.length > 0) {
+                deferred.reject(createArgumentErrorObject(arguments));
+                return deferred.promise;
+            }
+
+            var config = {
+                url: "http://localhost:8080/groups/" + groupId + "/contacts/" + contactId,
+                method: "GET"
+            };
+
+            var httpPromise = $httpWithProtection(config);
+
+            httpPromise.then(function (result) {
+                deferred.resolve(result.data);
+            }, function (error) {
+                deferred.reject(createServerErrorObject(error));
             });
+
             return deferred.promise;
         };
 
