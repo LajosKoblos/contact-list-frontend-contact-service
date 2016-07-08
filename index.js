@@ -214,6 +214,7 @@ angular.module("contactServiceModule", ["authServiceModule"])
             return {
                 message: error.data.message,
                 status: error.status,
+                fields: error.data.fields,
                 httpResponse: error.config
             };
         }
